@@ -33,7 +33,7 @@ export class EventsGateway {
     this.mcpClient.connectToServer(process.env.FINANCE_MCP_SERVER_PATH);
   }
 
-  @SubscribeMessage('conversation')
+  @SubscribeMessage('conversation.audio')
   async conversation(@MessageBody() data: Buffer) {
     this.logger.log('Message received');
     const transcription = await this.sttModel.getTranscription(
@@ -43,7 +43,7 @@ export class EventsGateway {
     this.logger.log('Transcription send');
     this.server.emit('user.message', transcription);
 
-    await this.mcpClient.processQuery(transcription, this.server);
+    await this.mcpClient.processQuery(transcription, this.server, true);
     this.logger.log('LLM reply sent');
   }
 
@@ -51,5 +51,13 @@ export class EventsGateway {
   async speech(@MessageBody() data: string) {
     await this.ttsModel.synthesizeSpeech(data, this.server);
     this.logger.log('Speech synthesized');
+  }
+
+  @SubscribeMessage('conversation.text')
+  async textConverstation(@MessageBody() data: string) {
+    this.server.emit('user.message', data);
+
+    await this.mcpClient.processQuery(data, this.server, false);
+    this.logger.log('LLM reply sent');
   }
 }

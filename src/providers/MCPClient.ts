@@ -64,7 +64,7 @@ export default class McpClient {
     }
   }
 
-  async processQuery(query: string, server: Server) {
+  async processQuery(query: string, server: Server, isSynthesize: boolean) {
     const messages: MessageParam[] = [
       {
         role: 'user',
@@ -84,7 +84,7 @@ export default class McpClient {
         stream: true,
       }),
     })
-      .then((res) => this.processStream(res, server))
+      .then((res) => this.processStream(res, server, isSynthesize))
       .catch((err) => this.logger.error('Error prompting LLM: ', err))
       .finally(() => this.logger.log('Prompt processing complete.'));
 
@@ -143,7 +143,7 @@ export default class McpClient {
     await this.mcp.close();
   }
 
-  private processStream(res: Response, server: Server) {
+  private processStream(res: Response, server: Server, isSynthesize: boolean) {
     const stream = res.body;
     let toolName = '';
     let toolInput = '';
@@ -196,7 +196,11 @@ export default class McpClient {
                     response = response + delta.text;
                   } else if (delta.type === 'signature_delta') {
                     server.emit('assistant.signature');
-                    await this.ttsModel.synthesizeSpeech(response, server);
+
+                    if (isSynthesize) {
+                      await this.ttsModel.synthesizeSpeech(response, server);
+                    }
+
                     response = '';
                   } else if (delta.type === 'input_json_delta') {
                     server.emit('assistant.tool', delta.partial_json);

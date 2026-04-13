@@ -1,3 +1,7 @@
+export type PingResponse = {
+  status: string;
+}
+
 export type McpResponse = {
   content: Text[];
 };

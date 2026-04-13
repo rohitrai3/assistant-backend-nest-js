@@ -1,13 +1,13 @@
-import { User } from "src/generated/prisma/client";
+import { User } from 'src/generated/prisma/client';
 
 export type AddUserResponse = {
   status: string;
   data: User;
-}
+};
 
 export type PingResponse = {
   status: string;
-}
+};
 
 export type McpResponse = {
   content: Text[];

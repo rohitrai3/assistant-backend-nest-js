@@ -1,5 +1,10 @@
 import { User } from 'src/generated/prisma/client';
 
+export type GetUserByUsernameResponse = {
+  status: string;
+  data: User | string;
+};
+
 export type AddUserResponse = {
   status: string;
   data: User;

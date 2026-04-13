@@ -1,0 +1,28 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Config {
+  id           Int      @default(autoincrement()) @id
+  llmEndpoints LlmEndpoint[]
+}
+
+model LlmEndpoint {
+  id       Int    @default(autoincrement()) @id
+  endpoint String
+  priority Int
+  config   Config @relation(fields: [configId], references: [id])
+  configId Int
+}
+

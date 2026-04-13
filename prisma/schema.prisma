@@ -13,16 +13,24 @@ datasource db {
   provider = "sqlite"
 }
 
+model User {
+  id       String  @id
+  username String  @unique
+  config   Config?
+}
+
 model Config {
-  id           Int      @default(autoincrement()) @id
+  id           String        @id
+  user         User          @relation(fields: [userId], references: [id])
+  userId       String        @unique
   llmEndpoints LlmEndpoint[]
 }
 
 model LlmEndpoint {
-  id       Int    @default(autoincrement()) @id
+  id       String @id
   endpoint String
   priority Int
   config   Config @relation(fields: [configId], references: [id])
-  configId Int
+  configId String
 }
 

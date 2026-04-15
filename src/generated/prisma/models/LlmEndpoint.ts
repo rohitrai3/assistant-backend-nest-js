@@ -20,68 +20,50 @@ export type LlmEndpointModel =
 
 export type AggregateLlmEndpoint = {
   _count: LlmEndpointCountAggregateOutputType | null;
-  _avg: LlmEndpointAvgAggregateOutputType | null;
-  _sum: LlmEndpointSumAggregateOutputType | null;
   _min: LlmEndpointMinAggregateOutputType | null;
   _max: LlmEndpointMaxAggregateOutputType | null;
-};
-
-export type LlmEndpointAvgAggregateOutputType = {
-  priority: number | null;
-};
-
-export type LlmEndpointSumAggregateOutputType = {
-  priority: number | null;
 };
 
 export type LlmEndpointMinAggregateOutputType = {
   id: string | null;
   endpoint: string | null;
-  priority: number | null;
+  isActive: boolean | null;
   configId: string | null;
 };
 
 export type LlmEndpointMaxAggregateOutputType = {
   id: string | null;
   endpoint: string | null;
-  priority: number | null;
+  isActive: boolean | null;
   configId: string | null;
 };
 
 export type LlmEndpointCountAggregateOutputType = {
   id: number;
   endpoint: number;
-  priority: number;
+  isActive: number;
   configId: number;
   _all: number;
-};
-
-export type LlmEndpointAvgAggregateInputType = {
-  priority?: true;
-};
-
-export type LlmEndpointSumAggregateInputType = {
-  priority?: true;
 };
 
 export type LlmEndpointMinAggregateInputType = {
   id?: true;
   endpoint?: true;
-  priority?: true;
+  isActive?: true;
   configId?: true;
 };
 
 export type LlmEndpointMaxAggregateInputType = {
   id?: true;
   endpoint?: true;
-  priority?: true;
+  isActive?: true;
   configId?: true;
 };
 
 export type LlmEndpointCountAggregateInputType = {
   id?: true;
   endpoint?: true;
-  priority?: true;
+  isActive?: true;
   configId?: true;
   _all?: true;
 };
@@ -129,18 +111,6 @@ export type LlmEndpointAggregateArgs<
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    *
-   * Select which fields to average
-   **/
-  _avg?: LlmEndpointAvgAggregateInputType;
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   *
-   * Select which fields to sum
-   **/
-  _sum?: LlmEndpointSumAggregateInputType;
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   *
    * Select which fields to find the minimum value
    **/
   _min?: LlmEndpointMinAggregateInputType;
@@ -173,8 +143,6 @@ export type LlmEndpointGroupByArgs<
   take?: number;
   skip?: number;
   _count?: LlmEndpointCountAggregateInputType | true;
-  _avg?: LlmEndpointAvgAggregateInputType;
-  _sum?: LlmEndpointSumAggregateInputType;
   _min?: LlmEndpointMinAggregateInputType;
   _max?: LlmEndpointMaxAggregateInputType;
 };
@@ -182,11 +150,9 @@ export type LlmEndpointGroupByArgs<
 export type LlmEndpointGroupByOutputType = {
   id: string;
   endpoint: string;
-  priority: number;
+  isActive: boolean;
   configId: string;
   _count: LlmEndpointCountAggregateOutputType | null;
-  _avg: LlmEndpointAvgAggregateOutputType | null;
-  _sum: LlmEndpointSumAggregateOutputType | null;
   _min: LlmEndpointMinAggregateOutputType | null;
   _max: LlmEndpointMaxAggregateOutputType | null;
 };
@@ -210,7 +176,7 @@ export type LlmEndpointWhereInput = {
   NOT?: Prisma.LlmEndpointWhereInput | Prisma.LlmEndpointWhereInput[];
   id?: Prisma.StringFilter<'LlmEndpoint'> | string;
   endpoint?: Prisma.StringFilter<'LlmEndpoint'> | string;
-  priority?: Prisma.IntFilter<'LlmEndpoint'> | number;
+  isActive?: Prisma.BoolFilter<'LlmEndpoint'> | boolean;
   configId?: Prisma.StringFilter<'LlmEndpoint'> | string;
   config?: Prisma.XOR<
     Prisma.ConfigScalarRelationFilter,
@@ -221,7 +187,7 @@ export type LlmEndpointWhereInput = {
 export type LlmEndpointOrderByWithRelationInput = {
   id?: Prisma.SortOrder;
   endpoint?: Prisma.SortOrder;
-  priority?: Prisma.SortOrder;
+  isActive?: Prisma.SortOrder;
   configId?: Prisma.SortOrder;
   config?: Prisma.ConfigOrderByWithRelationInput;
 };
@@ -233,7 +199,7 @@ export type LlmEndpointWhereUniqueInput = Prisma.AtLeast<
     OR?: Prisma.LlmEndpointWhereInput[];
     NOT?: Prisma.LlmEndpointWhereInput | Prisma.LlmEndpointWhereInput[];
     endpoint?: Prisma.StringFilter<'LlmEndpoint'> | string;
-    priority?: Prisma.IntFilter<'LlmEndpoint'> | number;
+    isActive?: Prisma.BoolFilter<'LlmEndpoint'> | boolean;
     configId?: Prisma.StringFilter<'LlmEndpoint'> | string;
     config?: Prisma.XOR<
       Prisma.ConfigScalarRelationFilter,
@@ -246,13 +212,11 @@ export type LlmEndpointWhereUniqueInput = Prisma.AtLeast<
 export type LlmEndpointOrderByWithAggregationInput = {
   id?: Prisma.SortOrder;
   endpoint?: Prisma.SortOrder;
-  priority?: Prisma.SortOrder;
+  isActive?: Prisma.SortOrder;
   configId?: Prisma.SortOrder;
   _count?: Prisma.LlmEndpointCountOrderByAggregateInput;
-  _avg?: Prisma.LlmEndpointAvgOrderByAggregateInput;
   _max?: Prisma.LlmEndpointMaxOrderByAggregateInput;
   _min?: Prisma.LlmEndpointMinOrderByAggregateInput;
-  _sum?: Prisma.LlmEndpointSumOrderByAggregateInput;
 };
 
 export type LlmEndpointScalarWhereWithAggregatesInput = {
@@ -265,55 +229,55 @@ export type LlmEndpointScalarWhereWithAggregatesInput = {
     | Prisma.LlmEndpointScalarWhereWithAggregatesInput[];
   id?: Prisma.StringWithAggregatesFilter<'LlmEndpoint'> | string;
   endpoint?: Prisma.StringWithAggregatesFilter<'LlmEndpoint'> | string;
-  priority?: Prisma.IntWithAggregatesFilter<'LlmEndpoint'> | number;
+  isActive?: Prisma.BoolWithAggregatesFilter<'LlmEndpoint'> | boolean;
   configId?: Prisma.StringWithAggregatesFilter<'LlmEndpoint'> | string;
 };
 
 export type LlmEndpointCreateInput = {
   id: string;
   endpoint: string;
-  priority: number;
+  isActive: boolean;
   config: Prisma.ConfigCreateNestedOneWithoutLlmEndpointsInput;
 };
 
 export type LlmEndpointUncheckedCreateInput = {
   id: string;
   endpoint: string;
-  priority: number;
+  isActive: boolean;
   configId: string;
 };
 
 export type LlmEndpointUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   endpoint?: Prisma.StringFieldUpdateOperationsInput | string;
-  priority?: Prisma.IntFieldUpdateOperationsInput | number;
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   config?: Prisma.ConfigUpdateOneRequiredWithoutLlmEndpointsNestedInput;
 };
 
 export type LlmEndpointUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   endpoint?: Prisma.StringFieldUpdateOperationsInput | string;
-  priority?: Prisma.IntFieldUpdateOperationsInput | number;
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   configId?: Prisma.StringFieldUpdateOperationsInput | string;
 };
 
 export type LlmEndpointCreateManyInput = {
   id: string;
   endpoint: string;
-  priority: number;
+  isActive: boolean;
   configId: string;
 };
 
 export type LlmEndpointUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   endpoint?: Prisma.StringFieldUpdateOperationsInput | string;
-  priority?: Prisma.IntFieldUpdateOperationsInput | number;
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
 };
 
 export type LlmEndpointUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   endpoint?: Prisma.StringFieldUpdateOperationsInput | string;
-  priority?: Prisma.IntFieldUpdateOperationsInput | number;
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   configId?: Prisma.StringFieldUpdateOperationsInput | string;
 };
 
@@ -330,30 +294,22 @@ export type LlmEndpointOrderByRelationAggregateInput = {
 export type LlmEndpointCountOrderByAggregateInput = {
   id?: Prisma.SortOrder;
   endpoint?: Prisma.SortOrder;
-  priority?: Prisma.SortOrder;
+  isActive?: Prisma.SortOrder;
   configId?: Prisma.SortOrder;
-};
-
-export type LlmEndpointAvgOrderByAggregateInput = {
-  priority?: Prisma.SortOrder;
 };
 
 export type LlmEndpointMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder;
   endpoint?: Prisma.SortOrder;
-  priority?: Prisma.SortOrder;
+  isActive?: Prisma.SortOrder;
   configId?: Prisma.SortOrder;
 };
 
 export type LlmEndpointMinOrderByAggregateInput = {
   id?: Prisma.SortOrder;
   endpoint?: Prisma.SortOrder;
-  priority?: Prisma.SortOrder;
+  isActive?: Prisma.SortOrder;
   configId?: Prisma.SortOrder;
-};
-
-export type LlmEndpointSumOrderByAggregateInput = {
-  priority?: Prisma.SortOrder;
 };
 
 export type LlmEndpointCreateNestedManyWithoutConfigInput = {
@@ -466,24 +422,20 @@ export type LlmEndpointUncheckedUpdateManyWithoutConfigNestedInput = {
     | Prisma.LlmEndpointScalarWhereInput[];
 };
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number;
-  increment?: number;
-  decrement?: number;
-  multiply?: number;
-  divide?: number;
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean;
 };
 
 export type LlmEndpointCreateWithoutConfigInput = {
   id: string;
   endpoint: string;
-  priority: number;
+  isActive: boolean;
 };
 
 export type LlmEndpointUncheckedCreateWithoutConfigInput = {
   id: string;
   endpoint: string;
-  priority: number;
+  isActive: boolean;
 };
 
 export type LlmEndpointCreateOrConnectWithoutConfigInput = {
@@ -538,32 +490,32 @@ export type LlmEndpointScalarWhereInput = {
     | Prisma.LlmEndpointScalarWhereInput[];
   id?: Prisma.StringFilter<'LlmEndpoint'> | string;
   endpoint?: Prisma.StringFilter<'LlmEndpoint'> | string;
-  priority?: Prisma.IntFilter<'LlmEndpoint'> | number;
+  isActive?: Prisma.BoolFilter<'LlmEndpoint'> | boolean;
   configId?: Prisma.StringFilter<'LlmEndpoint'> | string;
 };
 
 export type LlmEndpointCreateManyConfigInput = {
   id: string;
   endpoint: string;
-  priority: number;
+  isActive: boolean;
 };
 
 export type LlmEndpointUpdateWithoutConfigInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   endpoint?: Prisma.StringFieldUpdateOperationsInput | string;
-  priority?: Prisma.IntFieldUpdateOperationsInput | number;
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
 };
 
 export type LlmEndpointUncheckedUpdateWithoutConfigInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   endpoint?: Prisma.StringFieldUpdateOperationsInput | string;
-  priority?: Prisma.IntFieldUpdateOperationsInput | number;
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
 };
 
 export type LlmEndpointUncheckedUpdateManyWithoutConfigInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   endpoint?: Prisma.StringFieldUpdateOperationsInput | string;
-  priority?: Prisma.IntFieldUpdateOperationsInput | number;
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
 };
 
 export type LlmEndpointSelect<
@@ -573,7 +525,7 @@ export type LlmEndpointSelect<
   {
     id?: boolean;
     endpoint?: boolean;
-    priority?: boolean;
+    isActive?: boolean;
     configId?: boolean;
     config?: boolean | Prisma.ConfigDefaultArgs<ExtArgs>;
   },
@@ -587,7 +539,7 @@ export type LlmEndpointSelectCreateManyAndReturn<
   {
     id?: boolean;
     endpoint?: boolean;
-    priority?: boolean;
+    isActive?: boolean;
     configId?: boolean;
     config?: boolean | Prisma.ConfigDefaultArgs<ExtArgs>;
   },
@@ -601,7 +553,7 @@ export type LlmEndpointSelectUpdateManyAndReturn<
   {
     id?: boolean;
     endpoint?: boolean;
-    priority?: boolean;
+    isActive?: boolean;
     configId?: boolean;
     config?: boolean | Prisma.ConfigDefaultArgs<ExtArgs>;
   },
@@ -611,7 +563,7 @@ export type LlmEndpointSelectUpdateManyAndReturn<
 export type LlmEndpointSelectScalar = {
   id?: boolean;
   endpoint?: boolean;
-  priority?: boolean;
+  isActive?: boolean;
   configId?: boolean;
 };
 
@@ -619,7 +571,7 @@ export type LlmEndpointOmit<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetOmit<
-  'id' | 'endpoint' | 'priority' | 'configId',
+  'id' | 'endpoint' | 'isActive' | 'configId',
   ExtArgs['result']['llmEndpoint']
 >;
 export type LlmEndpointInclude<
@@ -653,7 +605,7 @@ export type $LlmEndpointPayload<
     {
       id: string;
       endpoint: string;
-      priority: number;
+      isActive: boolean;
       configId: string;
     },
     ExtArgs['result']['llmEndpoint']
@@ -1266,7 +1218,7 @@ export interface Prisma__LlmEndpointClient<
 export interface LlmEndpointFieldRefs {
   readonly id: Prisma.FieldRef<'LlmEndpoint', 'String'>;
   readonly endpoint: Prisma.FieldRef<'LlmEndpoint', 'String'>;
-  readonly priority: Prisma.FieldRef<'LlmEndpoint', 'Int'>;
+  readonly isActive: Prisma.FieldRef<'LlmEndpoint', 'Boolean'>;
   readonly configId: Prisma.FieldRef<'LlmEndpoint', 'String'>;
 }
 

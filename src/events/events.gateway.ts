@@ -15,7 +15,7 @@ config();
 
 @WebSocketGateway({
   cors: {
-    origin: [process.env.ORIGIN_URL],
+    origin: '*',
   },
 })
 export class EventsGateway {

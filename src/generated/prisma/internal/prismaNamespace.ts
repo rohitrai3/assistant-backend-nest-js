@@ -723,7 +723,7 @@ export type ConfigScalarFieldEnum =
 export const LlmEndpointScalarFieldEnum = {
   id: 'id',
   endpoint: 'endpoint',
-  priority: 'priority',
+  isActive: 'isActive',
   configId: 'configId',
 } as const;
 
@@ -750,19 +750,19 @@ export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<
 >;
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<
+  $PrismaModel,
+  'Boolean'
+>;
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<
   $PrismaModel,
   'Int'
->;
-
-/**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<
-  $PrismaModel,
-  'Float'
 >;
 
 /**

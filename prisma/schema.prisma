@@ -29,7 +29,7 @@ model Config {
 model LlmEndpoint {
   id       String @id
   endpoint String
-  priority Int
+  isActive Boolean
   config   Config @relation(fields: [configId], references: [id])
   configId String
 }

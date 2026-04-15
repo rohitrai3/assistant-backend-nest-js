@@ -91,7 +91,7 @@ export type ConfigScalarFieldEnum =
 export const LlmEndpointScalarFieldEnum = {
   id: 'id',
   endpoint: 'endpoint',
-  priority: 'priority',
+  isActive: 'isActive',
   configId: 'configId',
 } as const;
 

@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { UserCreateInput } from 'src/generated/prisma/models';
 import { PrismaService } from 'src/prisma.service';
-import { AddUserResponse, GetUserByUsernameResponse } from 'src/utils/types';
+import {
+  AddUserResponse,
+  DeleteUserByUsernameResponse,
+  GetUserByUsernameResponse,
+} from 'src/utils/types';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
@@ -26,14 +30,22 @@ export default class UsersService {
       where: { username: username },
     });
 
-    return user
-      ? {
-          status: 'Success',
-          data: user,
-        }
-      : {
-          status: 'Success',
-          data: 'Username not found',
-        };
+    return {
+      status: 'Success',
+      data: user ? user : 'Username not found',
+    };
+  }
+
+  async deleteUserByUsername(
+    username: string,
+  ): Promise<DeleteUserByUsernameResponse> {
+    const user = await this.prisma.user.delete({
+      where: { username: username },
+    });
+
+    return {
+      status: 'Success',
+      data: user ? user : 'Username not found',
+    };
   }
 }

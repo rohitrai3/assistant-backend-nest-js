@@ -162,16 +162,18 @@ export type UserWhereInput = {
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[];
   id?: Prisma.StringFilter<'User'> | string;
   username?: Prisma.StringFilter<'User'> | string;
-  config?: Prisma.XOR<
-    Prisma.ConfigNullableScalarRelationFilter,
-    Prisma.ConfigWhereInput
+  endpoints?: Prisma.EndpointListRelationFilter;
+  activeEndpoint?: Prisma.XOR<
+    Prisma.EndpointNullableScalarRelationFilter,
+    Prisma.EndpointWhereInput
   > | null;
 };
 
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder;
   username?: Prisma.SortOrder;
-  config?: Prisma.ConfigOrderByWithRelationInput;
+  endpoints?: Prisma.EndpointOrderByRelationAggregateInput;
+  activeEndpoint?: Prisma.EndpointOrderByWithRelationInput;
 };
 
 export type UserWhereUniqueInput = Prisma.AtLeast<
@@ -181,9 +183,10 @@ export type UserWhereUniqueInput = Prisma.AtLeast<
     AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[];
     OR?: Prisma.UserWhereInput[];
     NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[];
-    config?: Prisma.XOR<
-      Prisma.ConfigNullableScalarRelationFilter,
-      Prisma.ConfigWhereInput
+    endpoints?: Prisma.EndpointListRelationFilter;
+    activeEndpoint?: Prisma.XOR<
+      Prisma.EndpointNullableScalarRelationFilter,
+      Prisma.EndpointWhereInput
     > | null;
   },
   'id' | 'username'
@@ -212,25 +215,29 @@ export type UserScalarWhereWithAggregatesInput = {
 export type UserCreateInput = {
   id: string;
   username: string;
-  config?: Prisma.ConfigCreateNestedOneWithoutUserInput;
+  endpoints?: Prisma.EndpointCreateNestedManyWithoutUserInput;
+  activeEndpoint?: Prisma.EndpointCreateNestedOneWithoutActiveForInput;
 };
 
 export type UserUncheckedCreateInput = {
   id: string;
   username: string;
-  config?: Prisma.ConfigUncheckedCreateNestedOneWithoutUserInput;
+  endpoints?: Prisma.EndpointUncheckedCreateNestedManyWithoutUserInput;
+  activeEndpoint?: Prisma.EndpointUncheckedCreateNestedOneWithoutActiveForInput;
 };
 
 export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   username?: Prisma.StringFieldUpdateOperationsInput | string;
-  config?: Prisma.ConfigUpdateOneWithoutUserNestedInput;
+  endpoints?: Prisma.EndpointUpdateManyWithoutUserNestedInput;
+  activeEndpoint?: Prisma.EndpointUpdateOneWithoutActiveForNestedInput;
 };
 
 export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   username?: Prisma.StringFieldUpdateOperationsInput | string;
-  config?: Prisma.ConfigUncheckedUpdateOneWithoutUserNestedInput;
+  endpoints?: Prisma.EndpointUncheckedUpdateManyWithoutUserNestedInput;
+  activeEndpoint?: Prisma.EndpointUncheckedUpdateOneWithoutActiveForNestedInput;
 };
 
 export type UserCreateManyInput = {
@@ -268,82 +275,209 @@ export type UserScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput;
 };
 
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null;
+  isNot?: Prisma.UserWhereInput | null;
+};
+
 export type StringFieldUpdateOperationsInput = {
   set?: string;
 };
 
-export type UserCreateNestedOneWithoutConfigInput = {
+export type UserCreateNestedOneWithoutEndpointsInput = {
   create?: Prisma.XOR<
-    Prisma.UserCreateWithoutConfigInput,
-    Prisma.UserUncheckedCreateWithoutConfigInput
+    Prisma.UserCreateWithoutEndpointsInput,
+    Prisma.UserUncheckedCreateWithoutEndpointsInput
   >;
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutConfigInput;
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEndpointsInput;
   connect?: Prisma.UserWhereUniqueInput;
 };
 
-export type UserUpdateOneRequiredWithoutConfigNestedInput = {
+export type UserCreateNestedOneWithoutActiveEndpointInput = {
   create?: Prisma.XOR<
-    Prisma.UserCreateWithoutConfigInput,
-    Prisma.UserUncheckedCreateWithoutConfigInput
+    Prisma.UserCreateWithoutActiveEndpointInput,
+    Prisma.UserUncheckedCreateWithoutActiveEndpointInput
   >;
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutConfigInput;
-  upsert?: Prisma.UserUpsertWithoutConfigInput;
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutActiveEndpointInput;
+  connect?: Prisma.UserWhereUniqueInput;
+};
+
+export type UserUpdateOneRequiredWithoutEndpointsNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.UserCreateWithoutEndpointsInput,
+    Prisma.UserUncheckedCreateWithoutEndpointsInput
+  >;
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEndpointsInput;
+  upsert?: Prisma.UserUpsertWithoutEndpointsInput;
   connect?: Prisma.UserWhereUniqueInput;
   update?: Prisma.XOR<
     Prisma.XOR<
-      Prisma.UserUpdateToOneWithWhereWithoutConfigInput,
-      Prisma.UserUpdateWithoutConfigInput
+      Prisma.UserUpdateToOneWithWhereWithoutEndpointsInput,
+      Prisma.UserUpdateWithoutEndpointsInput
     >,
-    Prisma.UserUncheckedUpdateWithoutConfigInput
+    Prisma.UserUncheckedUpdateWithoutEndpointsInput
   >;
 };
 
-export type UserCreateWithoutConfigInput = {
-  id: string;
-  username: string;
+export type UserUpdateOneWithoutActiveEndpointNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.UserCreateWithoutActiveEndpointInput,
+    Prisma.UserUncheckedCreateWithoutActiveEndpointInput
+  >;
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutActiveEndpointInput;
+  upsert?: Prisma.UserUpsertWithoutActiveEndpointInput;
+  disconnect?: Prisma.UserWhereInput | boolean;
+  delete?: Prisma.UserWhereInput | boolean;
+  connect?: Prisma.UserWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.UserUpdateToOneWithWhereWithoutActiveEndpointInput,
+      Prisma.UserUpdateWithoutActiveEndpointInput
+    >,
+    Prisma.UserUncheckedUpdateWithoutActiveEndpointInput
+  >;
 };
 
-export type UserUncheckedCreateWithoutConfigInput = {
+export type UserCreateWithoutEndpointsInput = {
   id: string;
   username: string;
+  activeEndpoint?: Prisma.EndpointCreateNestedOneWithoutActiveForInput;
 };
 
-export type UserCreateOrConnectWithoutConfigInput = {
+export type UserUncheckedCreateWithoutEndpointsInput = {
+  id: string;
+  username: string;
+  activeEndpoint?: Prisma.EndpointUncheckedCreateNestedOneWithoutActiveForInput;
+};
+
+export type UserCreateOrConnectWithoutEndpointsInput = {
   where: Prisma.UserWhereUniqueInput;
   create: Prisma.XOR<
-    Prisma.UserCreateWithoutConfigInput,
-    Prisma.UserUncheckedCreateWithoutConfigInput
+    Prisma.UserCreateWithoutEndpointsInput,
+    Prisma.UserUncheckedCreateWithoutEndpointsInput
   >;
 };
 
-export type UserUpsertWithoutConfigInput = {
+export type UserCreateWithoutActiveEndpointInput = {
+  id: string;
+  username: string;
+  endpoints?: Prisma.EndpointCreateNestedManyWithoutUserInput;
+};
+
+export type UserUncheckedCreateWithoutActiveEndpointInput = {
+  id: string;
+  username: string;
+  endpoints?: Prisma.EndpointUncheckedCreateNestedManyWithoutUserInput;
+};
+
+export type UserCreateOrConnectWithoutActiveEndpointInput = {
+  where: Prisma.UserWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.UserCreateWithoutActiveEndpointInput,
+    Prisma.UserUncheckedCreateWithoutActiveEndpointInput
+  >;
+};
+
+export type UserUpsertWithoutEndpointsInput = {
   update: Prisma.XOR<
-    Prisma.UserUpdateWithoutConfigInput,
-    Prisma.UserUncheckedUpdateWithoutConfigInput
+    Prisma.UserUpdateWithoutEndpointsInput,
+    Prisma.UserUncheckedUpdateWithoutEndpointsInput
   >;
   create: Prisma.XOR<
-    Prisma.UserCreateWithoutConfigInput,
-    Prisma.UserUncheckedCreateWithoutConfigInput
+    Prisma.UserCreateWithoutEndpointsInput,
+    Prisma.UserUncheckedCreateWithoutEndpointsInput
   >;
   where?: Prisma.UserWhereInput;
 };
 
-export type UserUpdateToOneWithWhereWithoutConfigInput = {
+export type UserUpdateToOneWithWhereWithoutEndpointsInput = {
   where?: Prisma.UserWhereInput;
   data: Prisma.XOR<
-    Prisma.UserUpdateWithoutConfigInput,
-    Prisma.UserUncheckedUpdateWithoutConfigInput
+    Prisma.UserUpdateWithoutEndpointsInput,
+    Prisma.UserUncheckedUpdateWithoutEndpointsInput
   >;
 };
 
-export type UserUpdateWithoutConfigInput = {
+export type UserUpdateWithoutEndpointsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   username?: Prisma.StringFieldUpdateOperationsInput | string;
+  activeEndpoint?: Prisma.EndpointUpdateOneWithoutActiveForNestedInput;
 };
 
-export type UserUncheckedUpdateWithoutConfigInput = {
+export type UserUncheckedUpdateWithoutEndpointsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   username?: Prisma.StringFieldUpdateOperationsInput | string;
+  activeEndpoint?: Prisma.EndpointUncheckedUpdateOneWithoutActiveForNestedInput;
+};
+
+export type UserUpsertWithoutActiveEndpointInput = {
+  update: Prisma.XOR<
+    Prisma.UserUpdateWithoutActiveEndpointInput,
+    Prisma.UserUncheckedUpdateWithoutActiveEndpointInput
+  >;
+  create: Prisma.XOR<
+    Prisma.UserCreateWithoutActiveEndpointInput,
+    Prisma.UserUncheckedCreateWithoutActiveEndpointInput
+  >;
+  where?: Prisma.UserWhereInput;
+};
+
+export type UserUpdateToOneWithWhereWithoutActiveEndpointInput = {
+  where?: Prisma.UserWhereInput;
+  data: Prisma.XOR<
+    Prisma.UserUpdateWithoutActiveEndpointInput,
+    Prisma.UserUncheckedUpdateWithoutActiveEndpointInput
+  >;
+};
+
+export type UserUpdateWithoutActiveEndpointInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  username?: Prisma.StringFieldUpdateOperationsInput | string;
+  endpoints?: Prisma.EndpointUpdateManyWithoutUserNestedInput;
+};
+
+export type UserUncheckedUpdateWithoutActiveEndpointInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  username?: Prisma.StringFieldUpdateOperationsInput | string;
+  endpoints?: Prisma.EndpointUncheckedUpdateManyWithoutUserNestedInput;
+};
+
+/**
+ * Count Type UserCountOutputType
+ */
+
+export type UserCountOutputType = {
+  endpoints: number;
+};
+
+export type UserCountOutputTypeSelect<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  endpoints?: boolean | UserCountOutputTypeCountEndpointsArgs;
+};
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeDefaultArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the UserCountOutputType
+   */
+  select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null;
+};
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountEndpointsArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.EndpointWhereInput;
 };
 
 export type UserSelect<
@@ -353,7 +487,9 @@ export type UserSelect<
   {
     id?: boolean;
     username?: boolean;
-    config?: boolean | Prisma.User$configArgs<ExtArgs>;
+    endpoints?: boolean | Prisma.User$endpointsArgs<ExtArgs>;
+    activeEndpoint?: boolean | Prisma.User$activeEndpointArgs<ExtArgs>;
+    _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['user']
 >;
@@ -396,7 +532,9 @@ export type UserInclude<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = {
-  config?: boolean | Prisma.User$configArgs<ExtArgs>;
+  endpoints?: boolean | Prisma.User$endpointsArgs<ExtArgs>;
+  activeEndpoint?: boolean | Prisma.User$activeEndpointArgs<ExtArgs>;
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type UserIncludeCreateManyAndReturn<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
@@ -413,7 +551,8 @@ export type $UserPayload<
 > = {
   name: 'User';
   objects: {
-    config: Prisma.$ConfigPayload<ExtArgs> | null;
+    endpoints: Prisma.$EndpointPayload<ExtArgs>[];
+    activeEndpoint: Prisma.$EndpointPayload<ExtArgs> | null;
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
@@ -969,11 +1108,22 @@ export interface Prisma__UserClient<
   GlobalOmitOptions = {},
 > extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: 'PrismaPromise';
-  config<T extends Prisma.User$configArgs<ExtArgs> = {}>(
-    args?: Prisma.Subset<T, Prisma.User$configArgs<ExtArgs>>,
-  ): Prisma.Prisma__ConfigClient<
+  endpoints<T extends Prisma.User$endpointsArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.User$endpointsArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$EndpointPayload<ExtArgs>,
+        T,
+        'findMany',
+        GlobalOmitOptions
+      >
+    | Null
+  >;
+  activeEndpoint<T extends Prisma.User$activeEndpointArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.User$activeEndpointArgs<ExtArgs>>,
+  ): Prisma.Prisma__EndpointClient<
     runtime.Types.Result.GetResult<
-      Prisma.$ConfigPayload<ExtArgs>,
+      Prisma.$EndpointPayload<ExtArgs>,
       T,
       'findUniqueOrThrow',
       GlobalOmitOptions
@@ -1470,25 +1620,54 @@ export type UserDeleteManyArgs<
 };
 
 /**
- * User.config
+ * User.endpoints
  */
-export type User$configArgs<
+export type User$endpointsArgs<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = {
   /**
-   * Select specific fields to fetch from the Config
+   * Select specific fields to fetch from the Endpoint
    */
-  select?: Prisma.ConfigSelect<ExtArgs> | null;
+  select?: Prisma.EndpointSelect<ExtArgs> | null;
   /**
-   * Omit specific fields from the Config
+   * Omit specific fields from the Endpoint
    */
-  omit?: Prisma.ConfigOmit<ExtArgs> | null;
+  omit?: Prisma.EndpointOmit<ExtArgs> | null;
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ConfigInclude<ExtArgs> | null;
-  where?: Prisma.ConfigWhereInput;
+  include?: Prisma.EndpointInclude<ExtArgs> | null;
+  where?: Prisma.EndpointWhereInput;
+  orderBy?:
+    | Prisma.EndpointOrderByWithRelationInput
+    | Prisma.EndpointOrderByWithRelationInput[];
+  cursor?: Prisma.EndpointWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?: Prisma.EndpointScalarFieldEnum | Prisma.EndpointScalarFieldEnum[];
+};
+
+/**
+ * User.activeEndpoint
+ */
+export type User$activeEndpointArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Endpoint
+   */
+  select?: Prisma.EndpointSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Endpoint
+   */
+  omit?: Prisma.EndpointOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EndpointInclude<ExtArgs> | null;
+  where?: Prisma.EndpointWhereInput;
 };
 
 /**

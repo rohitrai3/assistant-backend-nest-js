@@ -22,6 +22,7 @@ export class EventsGateway {
   private readonly logger = new Logger('EventsGateway');
   @WebSocketServer()
   server: Server;
+  audioBuffer = Buffer.alloc(0);
 
   constructor(
     private sttModel: SttModel,
@@ -31,6 +32,12 @@ export class EventsGateway {
     this.sttModel.load();
     this.ttsModel.load();
     this.mcpClient.connectToServer(process.env.FINANCE_MCP_SERVER_PATH);
+  }
+
+  @SubscribeMessage('online')
+  online() {
+    console.log('Online');
+    this.server.emit('online');
   }
 
   @SubscribeMessage('conversation.audio')
@@ -45,6 +52,30 @@ export class EventsGateway {
 
     await this.mcpClient.processQuery(transcription, this.server, true);
     this.logger.log('LLM reply sent');
+  }
+
+  @SubscribeMessage('conversation.audio.chunk')
+  conversationAudioChunk(@MessageBody() data: Buffer) {
+    this.logger.log('Conversation audio chunk received:', data);
+    this.audioBuffer = Buffer.concat(
+      [this.audioBuffer, data],
+      this.audioBuffer.length + data.length,
+    );
+  }
+
+  @SubscribeMessage('conversation.audio.chunk.stop')
+  async conversationAudioChunkStop() {
+    console.log('Conversation audio chunk stop:', this.audioBuffer);
+
+    const transcription = await this.sttModel.getTranscription(
+      new Float32Array(this.audioBuffer.buffer),
+    );
+    this.server.emit('user.message', transcription);
+
+    await this.mcpClient.processQuery(transcription, this.server, true);
+    this.logger.log('LLM reply sent');
+
+    this.audioBuffer = Buffer.alloc(0);
   }
 
   @SubscribeMessage('speech')

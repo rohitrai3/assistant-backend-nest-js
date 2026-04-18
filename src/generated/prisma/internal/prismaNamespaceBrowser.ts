@@ -55,8 +55,7 @@ export const AnyNull = runtime.AnyNull;
 
 export const ModelName = {
   User: 'User',
-  Config: 'Config',
-  LlmEndpoint: 'LlmEndpoint',
+  Endpoint: 'Endpoint',
 } as const;
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -80,23 +79,15 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum =
   (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum];
 
-export const ConfigScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-} as const;
-
-export type ConfigScalarFieldEnum =
-  (typeof ConfigScalarFieldEnum)[keyof typeof ConfigScalarFieldEnum];
-
-export const LlmEndpointScalarFieldEnum = {
+export const EndpointScalarFieldEnum = {
   id: 'id',
   endpoint: 'endpoint',
-  isActive: 'isActive',
-  configId: 'configId',
+  userId: 'userId',
+  activeForId: 'activeForId',
 } as const;
 
-export type LlmEndpointScalarFieldEnum =
-  (typeof LlmEndpointScalarFieldEnum)[keyof typeof LlmEndpointScalarFieldEnum];
+export type EndpointScalarFieldEnum =
+  (typeof EndpointScalarFieldEnum)[keyof typeof EndpointScalarFieldEnum];
 
 export const SortOrder = {
   asc: 'asc',
@@ -104,3 +95,10 @@ export const SortOrder = {
 } as const;
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder];
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last',
+} as const;
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];

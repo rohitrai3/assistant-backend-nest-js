@@ -8,6 +8,5 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User.js';
-export type * from './models/Config.js';
-export type * from './models/LlmEndpoint.js';
+export type * from './models/Endpoint.js';
 export type * from './commonInputTypes.js';

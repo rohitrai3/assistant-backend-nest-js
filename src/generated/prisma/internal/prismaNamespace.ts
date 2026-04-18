@@ -413,8 +413,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never
 
 export const ModelName = {
   User: 'User',
-  Config: 'Config',
-  LlmEndpoint: 'LlmEndpoint',
+  Endpoint: 'Endpoint',
 } as const;
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -436,7 +435,7 @@ export type TypeMap<
     omit: GlobalOmitOptions;
   };
   meta: {
-    modelProps: 'user' | 'config' | 'llmEndpoint';
+    modelProps: 'user' | 'endpoint';
     txIsolationLevel: TransactionIsolationLevel;
   };
   model: {
@@ -516,154 +515,78 @@ export type TypeMap<
         };
       };
     };
-    Config: {
-      payload: Prisma.$ConfigPayload<ExtArgs>;
-      fields: Prisma.ConfigFieldRefs;
+    Endpoint: {
+      payload: Prisma.$EndpointPayload<ExtArgs>;
+      fields: Prisma.EndpointFieldRefs;
       operations: {
         findUnique: {
-          args: Prisma.ConfigFindUniqueArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigPayload> | null;
+          args: Prisma.EndpointFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EndpointPayload> | null;
         };
         findUniqueOrThrow: {
-          args: Prisma.ConfigFindUniqueOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigPayload>;
+          args: Prisma.EndpointFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EndpointPayload>;
         };
         findFirst: {
-          args: Prisma.ConfigFindFirstArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigPayload> | null;
+          args: Prisma.EndpointFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EndpointPayload> | null;
         };
         findFirstOrThrow: {
-          args: Prisma.ConfigFindFirstOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigPayload>;
+          args: Prisma.EndpointFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EndpointPayload>;
         };
         findMany: {
-          args: Prisma.ConfigFindManyArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigPayload>[];
+          args: Prisma.EndpointFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EndpointPayload>[];
         };
         create: {
-          args: Prisma.ConfigCreateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigPayload>;
+          args: Prisma.EndpointCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EndpointPayload>;
         };
         createMany: {
-          args: Prisma.ConfigCreateManyArgs<ExtArgs>;
+          args: Prisma.EndpointCreateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
         createManyAndReturn: {
-          args: Prisma.ConfigCreateManyAndReturnArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigPayload>[];
+          args: Prisma.EndpointCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EndpointPayload>[];
         };
         delete: {
-          args: Prisma.ConfigDeleteArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigPayload>;
+          args: Prisma.EndpointDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EndpointPayload>;
         };
         update: {
-          args: Prisma.ConfigUpdateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigPayload>;
+          args: Prisma.EndpointUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EndpointPayload>;
         };
         deleteMany: {
-          args: Prisma.ConfigDeleteManyArgs<ExtArgs>;
+          args: Prisma.EndpointDeleteManyArgs<ExtArgs>;
           result: BatchPayload;
         };
         updateMany: {
-          args: Prisma.ConfigUpdateManyArgs<ExtArgs>;
+          args: Prisma.EndpointUpdateManyArgs<ExtArgs>;
           result: BatchPayload;
         };
         updateManyAndReturn: {
-          args: Prisma.ConfigUpdateManyAndReturnArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigPayload>[];
+          args: Prisma.EndpointUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EndpointPayload>[];
         };
         upsert: {
-          args: Prisma.ConfigUpsertArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigPayload>;
+          args: Prisma.EndpointUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EndpointPayload>;
         };
         aggregate: {
-          args: Prisma.ConfigAggregateArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.AggregateConfig>;
+          args: Prisma.EndpointAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEndpoint>;
         };
         groupBy: {
-          args: Prisma.ConfigGroupByArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.ConfigGroupByOutputType>[];
+          args: Prisma.EndpointGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.EndpointGroupByOutputType>[];
         };
         count: {
-          args: Prisma.ConfigCountArgs<ExtArgs>;
+          args: Prisma.EndpointCountArgs<ExtArgs>;
           result:
-            | runtime.Types.Utils.Optional<Prisma.ConfigCountAggregateOutputType>
-            | number;
-        };
-      };
-    };
-    LlmEndpoint: {
-      payload: Prisma.$LlmEndpointPayload<ExtArgs>;
-      fields: Prisma.LlmEndpointFieldRefs;
-      operations: {
-        findUnique: {
-          args: Prisma.LlmEndpointFindUniqueArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmEndpointPayload> | null;
-        };
-        findUniqueOrThrow: {
-          args: Prisma.LlmEndpointFindUniqueOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmEndpointPayload>;
-        };
-        findFirst: {
-          args: Prisma.LlmEndpointFindFirstArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmEndpointPayload> | null;
-        };
-        findFirstOrThrow: {
-          args: Prisma.LlmEndpointFindFirstOrThrowArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmEndpointPayload>;
-        };
-        findMany: {
-          args: Prisma.LlmEndpointFindManyArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmEndpointPayload>[];
-        };
-        create: {
-          args: Prisma.LlmEndpointCreateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmEndpointPayload>;
-        };
-        createMany: {
-          args: Prisma.LlmEndpointCreateManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        createManyAndReturn: {
-          args: Prisma.LlmEndpointCreateManyAndReturnArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmEndpointPayload>[];
-        };
-        delete: {
-          args: Prisma.LlmEndpointDeleteArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmEndpointPayload>;
-        };
-        update: {
-          args: Prisma.LlmEndpointUpdateArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmEndpointPayload>;
-        };
-        deleteMany: {
-          args: Prisma.LlmEndpointDeleteManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        updateMany: {
-          args: Prisma.LlmEndpointUpdateManyArgs<ExtArgs>;
-          result: BatchPayload;
-        };
-        updateManyAndReturn: {
-          args: Prisma.LlmEndpointUpdateManyAndReturnArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmEndpointPayload>[];
-        };
-        upsert: {
-          args: Prisma.LlmEndpointUpsertArgs<ExtArgs>;
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmEndpointPayload>;
-        };
-        aggregate: {
-          args: Prisma.LlmEndpointAggregateArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.AggregateLlmEndpoint>;
-        };
-        groupBy: {
-          args: Prisma.LlmEndpointGroupByArgs<ExtArgs>;
-          result: runtime.Types.Utils.Optional<Prisma.LlmEndpointGroupByOutputType>[];
-        };
-        count: {
-          args: Prisma.LlmEndpointCountArgs<ExtArgs>;
-          result:
-            | runtime.Types.Utils.Optional<Prisma.LlmEndpointCountAggregateOutputType>
+            | runtime.Types.Utils.Optional<Prisma.EndpointCountAggregateOutputType>
             | number;
         };
       };
@@ -712,23 +635,15 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum =
   (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum];
 
-export const ConfigScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-} as const;
-
-export type ConfigScalarFieldEnum =
-  (typeof ConfigScalarFieldEnum)[keyof typeof ConfigScalarFieldEnum];
-
-export const LlmEndpointScalarFieldEnum = {
+export const EndpointScalarFieldEnum = {
   id: 'id',
   endpoint: 'endpoint',
-  isActive: 'isActive',
-  configId: 'configId',
+  userId: 'userId',
+  activeForId: 'activeForId',
 } as const;
 
-export type LlmEndpointScalarFieldEnum =
-  (typeof LlmEndpointScalarFieldEnum)[keyof typeof LlmEndpointScalarFieldEnum];
+export type EndpointScalarFieldEnum =
+  (typeof EndpointScalarFieldEnum)[keyof typeof EndpointScalarFieldEnum];
 
 export const SortOrder = {
   asc: 'asc',
@@ -736,6 +651,13 @@ export const SortOrder = {
 } as const;
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder];
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last',
+} as const;
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];
 
 /**
  * Field references
@@ -747,14 +669,6 @@ export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder];
 export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<
   $PrismaModel,
   'String'
->;
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<
-  $PrismaModel,
-  'Boolean'
 >;
 
 /**
@@ -869,8 +783,7 @@ export type PrismaClientOptions = (
 };
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit;
-  config?: Prisma.ConfigOmit;
-  llmEndpoint?: Prisma.LlmEndpointOmit;
+  endpoint?: Prisma.EndpointOmit;
 };
 
 /* Types for Logging */

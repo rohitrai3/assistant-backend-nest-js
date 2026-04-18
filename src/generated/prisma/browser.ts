@@ -22,12 +22,7 @@ export * from './enums.js';
  */
 export type User = Prisma.UserModel;
 /**
- * Model Config
+ * Model Endpoint
  *
  */
-export type Config = Prisma.ConfigModel;
-/**
- * Model LlmEndpoint
- *
- */
-export type LlmEndpoint = Prisma.LlmEndpointModel;
+export type Endpoint = Prisma.EndpointModel;

@@ -1,8 +1,43 @@
 import { User } from 'src/generated/prisma/client';
 
+export type DeleteUserByUsernameResponse = {
+  status: string;
+  data: User | string;
+};
+
+export type DeleteUserByUsernameRequest = {
+  username: string;
+};
+
+export type LoginResponse = {
+  status: string;
+  data: LoginData;
+};
+
+export type LoginRequest = {
+  username: string;
+  endpoint: string;
+};
+
+export type LoginData = {
+  username: string | null;
+  activeEndpoint?: string | null;
+  endpoints: string[];
+};
+
+export type SyncData = {
+  username: string;
+  backendEndpoints: string[];
+  activeEndpoint: string;
+};
+
 export type GetUserByUsernameResponse = {
   status: string;
   data: User | string;
+};
+
+export type GetUserByUsernameRequest = {
+  username: string;
 };
 
 export type AddUserResponse = {

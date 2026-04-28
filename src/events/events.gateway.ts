@@ -31,7 +31,7 @@ export class EventsGateway {
   ) {
     this.sttModel.load();
     this.ttsModel.load();
-    this.mcpClient.connectToServer(process.env.FINANCE_MCP_SERVER_PATH);
+    this.mcpClient.loadServers();
   }
 
   @SubscribeMessage('online')
@@ -48,7 +48,7 @@ export class EventsGateway {
     );
 
     this.logger.log('Transcription send');
-    this.server.emit('user.message', transcription);
+    this.server.emit('conversation.user.message', transcription);
 
     await this.mcpClient.processQuery(transcription, this.server, true);
     this.logger.log('LLM reply sent');
@@ -56,7 +56,7 @@ export class EventsGateway {
 
   @SubscribeMessage('conversation.audio.chunk')
   conversationAudioChunk(@MessageBody() data: Buffer) {
-    this.logger.log('Conversation audio chunk received:', data);
+    this.logger.log('Conversation audio chunk received');
     this.audioBuffer = Buffer.concat(
       [this.audioBuffer, data],
       this.audioBuffer.length + data.length,
@@ -65,14 +65,14 @@ export class EventsGateway {
 
   @SubscribeMessage('conversation.audio.chunk.stop')
   async conversationAudioChunkStop() {
-    console.log('Conversation audio chunk stop:', this.audioBuffer);
+    console.log('Conversation audio chunk stop');
 
     const transcription = await this.sttModel.getTranscription(
       new Float32Array(this.audioBuffer.buffer),
     );
-    this.server.emit('user.message', transcription);
+    this.server.emit('conversation.user.message', transcription);
 
-    await this.mcpClient.processQuery(transcription, this.server, true);
+    await this.mcpClient.processQuery(transcription, this.server, false);
     this.logger.log('LLM reply sent');
 
     this.audioBuffer = Buffer.alloc(0);
@@ -84,11 +84,18 @@ export class EventsGateway {
     this.logger.log('Speech synthesized');
   }
 
-  @SubscribeMessage('conversation.text')
+  @SubscribeMessage('conversation.user.text')
   async textConverstation(@MessageBody() data: string) {
-    this.server.emit('user.message', data);
+    this.logger.log('Conversation use text received');
+    this.server.emit('conversation.user.message', data);
 
     await this.mcpClient.processQuery(data, this.server, false);
     this.logger.log('LLM reply sent');
+  }
+
+  @SubscribeMessage('conversation.assistant.init')
+  async initAssistant(@MessageBody() data: string) {
+    this.logger.log('Conversation assistant init received:', data);
+    await this.mcpClient.initAssistant(data, this.server, false);
   }
 }

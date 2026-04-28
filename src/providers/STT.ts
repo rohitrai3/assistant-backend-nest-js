@@ -4,7 +4,6 @@ import {
   pipeline,
 } from '@huggingface/transformers';
 import { Injectable, Logger } from '@nestjs/common';
-import { join } from 'path/posix';
 
 @Injectable()
 export default class SttModel {
@@ -14,7 +13,6 @@ export default class SttModel {
   constructor() {
     this.logger.log('Initialize SttModel');
 
-    env.localModelPath = join(process.cwd(), 'src/assets/models/');
     env.allowRemoteModels = false;
     env.allowLocalModels = true;
     env.useBrowserCache = false;
@@ -25,13 +23,7 @@ export default class SttModel {
 
     this.transcriber = await pipeline(
       'automatic-speech-recognition',
-      'whisper-tiny-en',
-      {
-        dtype: {
-          encoder_model: 'fp32',
-          decoder_model_merged: 'q4',
-        },
-      },
+      'whisper-base-en',
     )
       .catch((err) => this.logger.error('Error loading model: ', err))
       .finally(() => this.logger.log('STT model loaded'));

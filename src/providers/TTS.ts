@@ -75,12 +75,14 @@ export default class TtsModel {
         waveform.data,
       );
 
+      console.log('speech: ', wav.toBuffer());
       server.emit('speech', wav.toBuffer());
     }
   }
 
   getSpeakerEmbeddings(): Tensor | null {
-    const speakerEmbeddingsPath = process.env.SPEAKER_EMBEDDING_PATH;
+    const speakerEmbeddingsPath =
+      process.cwd() + '/src/assets/speaker_embeddings/speaker_embeddings.bin';
 
     if (!speakerEmbeddingsPath) {
       console.error('Speaker embeddings path not found');

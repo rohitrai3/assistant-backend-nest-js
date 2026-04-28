@@ -1,0 +1,51 @@
+import { createDeepAgent, DeepAgent } from "deepagents";
+import { LlamaCpp } from "@langchain/community/llms/llama_cpp";
+import { tool } from "langchain";
+import { Injectable } from "@nestjs/common";
+
+@Injectable()
+export default class Agent {
+  private model: LlamaCpp;
+  private agent: DeepAgent;
+  private assistantInstructions: string = `You are an assistant. Your job is to do what user tolds. You have
+  access to finance app tool for money related tasks.
+    ## \`ping_finance\`
+  Use this to check if finance app is online or not`;
+  private llamaPath: string = "/run/media/rohitrai/Storage/Repos/Models/GGUF/gemma-4-E2B-it-GGUF/gemma-4-e2b-it-Q8_0.gguf";
+
+  async init() {
+    this.model = await LlamaCpp.initialize({ modelPath: this.llamaPath });
+
+    this.agent = createDeepAgent({
+      model: this.model,
+      tools: [this.pingFinance],
+      systemPrompt: this.assistantInstructions,
+    });
+  }
+
+  async action(text: string) {
+    const result = await this.agent.invoke({
+      messages: [{ role: "user", content: text }],
+    });
+
+    console.log("agent:", result);
+  }
+
+  private pingFinance = tool(
+    async () => {
+      const response = await fetch(`http://localhost:3001/ping`);
+      const responseText = await response.json();
+      let status = "Offline";
+
+      if (responseText.status === "Successful") status = "Online";
+
+      return `Finance app is ${status}`;
+    },
+    {
+      name: "ping_finance",
+      description: "Check status of Finance app",
+    }
+  );
+
+}
+

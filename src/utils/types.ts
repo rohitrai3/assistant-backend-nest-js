@@ -53,6 +53,14 @@ export type McpResponse = {
   content: Text[];
 };
 
+export type MessageStart = {
+  type: 'message_start';
+};
+
+export type MessageStop = {
+  type: 'message_stop';
+};
+
 export type ContentBlockStart = {
   type: 'content_block_start';
   index: number;
@@ -63,6 +71,11 @@ export type ContentBlockDelta = {
   type: 'content_block_delta';
   index: number;
   delta: TextDelta | ThinkingDelta | SignatureDelta | InputJsonDelta;
+};
+
+export type ContentBlockStop = {
+  type: 'content_block_stop';
+  index: number;
 };
 
 export type ToolUse = {

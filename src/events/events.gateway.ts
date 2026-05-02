@@ -40,6 +40,18 @@ export class EventsGateway {
     this.server.emit('online');
   }
 
+  @SubscribeMessage('status.llm.check')
+  async checkLLMStatus() {
+    console.log('Check LLM status');
+    await fetch(`${process.env.LLM_BACKEND_URL}/health`)
+      .then(res => res.json())
+      .then(data => {
+        console.log("data:", data);
+        if (data.status === "ok") this.server.emit("status.llm.online");
+      })
+      .catch(err => console.log("Online health error:", err));
+  }
+
   @SubscribeMessage('conversation.audio')
   async conversation(@MessageBody() data: Buffer) {
     this.logger.log('Message received');

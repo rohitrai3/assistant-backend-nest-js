@@ -1,12 +1,11 @@
 FROM node:24
 
-WORKDIR /app
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm i
 
 COPY . .
 
-RUN npm i
-RUN npm run build
-
-EXPOSE 3000
-
-CMD ["node", "dist/src/main.js"]
+CMD ["sh", "-c", "npm run db:deploy && npm run build && npm run start:prod"]

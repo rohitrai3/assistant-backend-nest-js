@@ -5,7 +5,7 @@ import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class AppService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   ping(): string {
     return 'Success';
@@ -15,21 +15,21 @@ export class AppService {
     const user = await this.prisma.user.findUnique({
       where: { username: input.username },
       include: {
-        activeEndpoint: true,
+        selectedEndpoint: true,
         endpoints: true,
       },
     });
 
     if (user) {
-      if (user.activeEndpoint) {
+      if (user.selectedEndpoint) {
         console.log('User and endpoint exist');
 
         return {
           status: 'Success',
           data: {
             username: user.username,
-            activeEndpoint: user.activeEndpoint.endpoint,
-            endpoints: user.endpoints.map((endpoint) => endpoint.endpoint),
+            selectedEndpointUrl: user.selectedEndpoint.url,
+            endpoints: user.endpoints.map((endpoint) => endpoint),
           },
         };
       } else {
@@ -37,11 +37,12 @@ export class AppService {
         const endpoint = await this.prisma.endpoint.create({
           data: {
             id: uuid(),
-            endpoint: input.endpoint,
+            url: input.endpoint.url,
+            isSelected: input.endpoint.isSelected,
             user: {
               connect: { username: input.username },
             },
-            activeFor: {
+            selectedFor: {
               connect: { username: input.username },
             },
           },
@@ -50,18 +51,18 @@ export class AppService {
         const user = await this.prisma.user.findUnique({
           where: { username: input.username },
           include: {
-            activeEndpoint: true,
+            selectedEndpoint: true,
             endpoints: true,
           },
         });
 
-        if (endpoint && user && user.activeEndpoint) {
+        if (endpoint && user && user.selectedEndpoint) {
           return {
             status: 'Success',
             data: {
               username: user.username,
-              activeEndpoint: user.activeEndpoint.endpoint,
-              endpoints: user.endpoints.map((endpoint) => endpoint.endpoint),
+              selectedEndpointUrl: user.selectedEndpoint.url,
+              endpoints: user.endpoints.map((endpoint) => endpoint),
             },
           };
         }
@@ -79,11 +80,12 @@ export class AppService {
         const endpoint = await this.prisma.endpoint.create({
           data: {
             id: uuid(),
-            endpoint: input.endpoint,
+            url: input.endpoint.url,
+            isSelected: input.endpoint.isSelected,
             user: {
               connect: { username: input.username },
             },
-            activeFor: {
+            selectedFor: {
               connect: { username: input.username },
             },
           },
@@ -91,18 +93,18 @@ export class AppService {
         const user = await this.prisma.user.findUnique({
           where: { username: input.username },
           include: {
-            activeEndpoint: true,
+            selectedEndpoint: true,
             endpoints: true,
           },
         });
 
-        if (endpoint && user && user.activeEndpoint) {
+        if (endpoint && user && user.selectedEndpoint) {
           return {
             status: 'Success',
             data: {
               username: user.username,
-              activeEndpoint: user.activeEndpoint.endpoint,
-              endpoints: user.endpoints.map((endpoint) => endpoint.endpoint),
+              selectedEndpointUrl: user.selectedEndpoint.url,
+              endpoints: user.endpoints.map((endpoint) => endpoint),
             },
           };
         }
@@ -113,13 +115,18 @@ export class AppService {
       status: 'Success',
       data: {
         username: user?.username ? user.username : '',
-        activeEndpoint: user?.activeEndpoint
-          ? user.activeEndpoint.endpoint
+        selectedEndpointUrl: user?.selectedEndpoint?.url
+          ? user.selectedEndpoint.url
           : '',
         endpoints: user?.endpoints
-          ? user.endpoints.map((endpoint) => endpoint.endpoint)
+          ? user.endpoints.map((endpoint) => endpoint)
           : [],
       },
     };
+  }
+
+  async deleteAll() {
+    await this.prisma.endpoint.deleteMany({});
+    await this.prisma.user.deleteMany({});
   }
 }

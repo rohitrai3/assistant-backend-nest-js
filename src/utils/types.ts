@@ -1,4 +1,4 @@
-import { User } from 'src/generated/prisma/client';
+import { Endpoint, User } from 'src/generated/prisma/client';
 
 export type DeleteUserByUsernameResponse = {
   status: string;
@@ -16,13 +16,13 @@ export type LoginResponse = {
 
 export type LoginRequest = {
   username: string;
-  endpoint: string;
+  endpoint: Endpoint;
 };
 
 export type LoginData = {
   username: string | null;
-  activeEndpoint?: string | null;
-  endpoints: string[];
+  selectedEndpointUrl?: string | null;
+  endpoints: Endpoint[];
 };
 
 export type SyncData = {

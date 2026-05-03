@@ -108,6 +108,6 @@ export class EventsGateway {
   @SubscribeMessage('conversation.assistant.init')
   async initAssistant(@MessageBody() data: string) {
     this.logger.log('Conversation assistant init received:', data);
-    await this.mcpClient.initAssistant(data, this.server, false);
+    await this.mcpClient.initAssistant(data);
   }
 }

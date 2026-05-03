@@ -80,15 +80,13 @@ export default class McpClient {
     });
   }
 
-  async initAssistant(username: string, server: Server, isSynthesize: boolean) {
+  async initAssistant(username: string) {
     const filePath = join(process.cwd(), 'src/assets/Skills/finance/SKILL.md');
     const financeSkill = await readFile(filePath, 'utf-8');
     this.messages = [];
-    this.assistantInstruction = `You are an assistant of the user whose name is ${username}. Greet them.
+    this.assistantInstruction = `You are an assistant of the user whose name is ${username}.
       When user talks about finances or transactions, read following skill to provide assistanc: ${financeSkill}.
       `;
-
-    await this.callLlm(server, isSynthesize);
   }
 
   async processQuery(query: string, server: Server, isSynthesize: boolean) {

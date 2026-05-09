@@ -5,7 +5,7 @@ import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class AppService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   ping(): string {
     return 'Success';

@@ -45,7 +45,7 @@ export default class McpClient {
     const dir = join(process.cwd(), 'src/assets/mcp_servers/');
     const files = await readdir(dir);
 
-    files.forEach(async (file) => {
+    files.map(async (file) => {
       const name = file.split('.')[0];
       this.logger.log(`Loading ${name} MCP server...`);
 

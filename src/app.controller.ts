@@ -5,7 +5,7 @@ import { MessageBody } from '@nestjs/websockets';
 
 @Controller('/')
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(private readonly appService: AppService) {}
 
   @Get('ping')
   ping(): PingResponse {
@@ -25,7 +25,7 @@ export class AppController {
 
   @Delete('delete')
   async deleteAll() {
-    console.log("Delete all API invoked");
+    console.log('Delete all API invoked');
 
     return await this.appService.deleteAll();
   }

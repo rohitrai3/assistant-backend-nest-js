@@ -43,13 +43,33 @@ export class EventsGateway {
   @SubscribeMessage('status.llm.check')
   async checkLLMStatus() {
     console.log('Check LLM status');
-    await fetch(`${process.env.LLM_BACKEND_URL}/health`)
+    await fetch(`${process.env.LLM_URL}/health`)
       .then((res) => res.json())
       .then((data) => {
         console.log('data:', data);
         if (data.status === 'ok') this.server.emit('status.llm.online');
+        else this.server.emit('status.finance.offline');
       })
-      .catch((err) => console.log('Online health error:', err));
+      .catch((err) => {
+        this.server.emit('status.llm.offline');
+        console.log('LLM ping error:', err);
+      });
+  }
+
+  @SubscribeMessage('status.finance.check')
+  async checkFinanceStatus() {
+    console.log('Check Finance status');
+    await fetch(`${process.env.FINANCE_URL}/ping`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('data:', data);
+        if (data.status === 'success') this.server.emit('status.finance.online');
+        else this.server.emit('status.finance.offline');
+      })
+      .catch((err) => {
+        this.server.emit('status.finance.offline');
+        console.log('Finance ping error:', err);
+      });
   }
 
   @SubscribeMessage('conversation.audio')

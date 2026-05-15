@@ -63,7 +63,8 @@ export class EventsGateway {
       .then((res) => res.json())
       .then((data) => {
         console.log('data:', data);
-        if (data.status === 'success') this.server.emit('status.finance.online');
+        if (data.status === 'success')
+          this.server.emit('status.finance.online');
         else this.server.emit('status.finance.offline');
       })
       .catch((err) => {

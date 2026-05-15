@@ -114,7 +114,7 @@ export default class McpClient {
   }
 
   private async callLlm(server: Server, isSynthesize: boolean) {
-    await fetch(`${process.env.LLM_BACKEND_URL}/v1/messages`, {
+    await fetch(`${process.env.LLM_URL}/v1/messages`, {
       method: 'POST',
       headers: {
         'Content-Type': 'text/event-stream',
@@ -128,7 +128,10 @@ export default class McpClient {
       }),
     })
       .then((res) => this.processStream(res, server, isSynthesize))
-      .catch((err) => this.logger.error('Error prompting LLM: ', err))
+      .catch((err) => {
+        this.logger.error('Error prompting LLM: ', err);
+        server.emit('assistant.log.error', `Error prompting LLM: ${err}`);
+      })
       .finally(() => this.logger.log('Prompt processing complete.'));
   }
 

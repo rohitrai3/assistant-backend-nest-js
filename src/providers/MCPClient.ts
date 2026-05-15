@@ -22,6 +22,7 @@ import TtsModel from './TTS';
 import { join } from 'path';
 import { readdir, readFile } from 'fs/promises';
 import { ToolResultBlockParam } from '@anthropic-ai/sdk/resources';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export default class McpClient {
@@ -34,7 +35,7 @@ export default class McpClient {
   @Inject()
   private ttsModel: TtsModel;
 
-  constructor() {
+  constructor(private configService: ConfigService) {
     this.logger.log('Initialize McpClient');
     this.mcp = new Client({ name: 'mcp-client-cli', version: '1.0.0' });
     this.clients = new Map();
@@ -114,7 +115,7 @@ export default class McpClient {
   }
 
   private async callLlm(server: Server, isSynthesize: boolean) {
-    await fetch(`${process.env.LLM_URL}/v1/messages`, {
+    await fetch(`${this.configService.get<string>('LLM_URL')}/v1/messages`, {
       method: 'POST',
       headers: {
         'Content-Type': 'text/event-stream',

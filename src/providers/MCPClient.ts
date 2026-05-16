@@ -42,10 +42,13 @@ export default class McpClient {
 
   async loadServers() {
     this.logger.log('Loading MCP servers...');
-    const dir = join(
-      process.cwd(),
-      process.env.MCP_SERVERS_PATH ?? 'src/assets/mcp_servers/',
-    );
+    const dir = process.env.MCP_SERVERS_PATH;
+
+    if (!dir) {
+      this.logger.log('MCP servers path not defined');
+      return;
+    }
+
     const files = await readdir(dir);
 
     files.map(async (file) => {

@@ -13,7 +13,7 @@ export default class Logger {
     ),
     transports: [
       new transports.Console(),
-      new transports.File({ filename: 'assistant-backend.log' }),
+      new transports.File({ filename: 'logs/assistant-backend.log' }),
     ],
   });
 

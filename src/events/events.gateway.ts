@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import {
   MessageBody,
   SubscribeMessage,
@@ -7,6 +7,7 @@ import {
 } from '@nestjs/websockets';
 import { config } from 'dotenv';
 import { Server } from 'socket.io';
+import Logger from 'src/providers/Logger';
 import McpClient from 'src/providers/MCPClient';
 import SttModel from 'src/providers/STT';
 import TtsModel from 'src/providers/TTS';
@@ -19,7 +20,8 @@ config();
   },
 })
 export class EventsGateway {
-  private readonly logger = new Logger('EventsGateway');
+  @Inject()
+  private readonly logger: Logger;
   @WebSocketServer()
   server: Server;
   audioBuffer = Buffer.alloc(0);
@@ -36,60 +38,59 @@ export class EventsGateway {
 
   @SubscribeMessage('online')
   online() {
-    console.log('Online');
+    this.logger.info('Online');
     this.server.emit('online');
   }
 
   @SubscribeMessage('status.llm.check')
   async checkLLMStatus() {
-    console.log('Check LLM status');
+    this.logger.info('Check LLM status');
     await fetch(`${process.env.LLM_URL}/health`)
       .then((res) => res.json())
       .then((data) => {
-        console.log('data:', data);
+        this.logger.info(`data: ${data}`);
         if (data.status === 'ok') this.server.emit('status.llm.online');
         else this.server.emit('status.finance.offline');
       })
       .catch((err) => {
         this.server.emit('status.llm.offline');
-        console.log('LLM ping error:', err);
+        this.logger.error(`LLM ping error: ${err}`);
       });
   }
 
   @SubscribeMessage('status.finance.check')
   async checkFinanceStatus() {
-    console.log('Check Finance status');
+    this.logger.info('Check Finance status');
     await fetch(`${process.env.FINANCE_URL}/ping`)
       .then((res) => res.json())
       .then((data) => {
-        console.log('data:', data);
+        this.logger.info(`data: ${data}`);
         if (data.status === 'success')
           this.server.emit('status.finance.online');
         else this.server.emit('status.finance.offline');
       })
       .catch((err) => {
         this.server.emit('status.finance.offline');
-        console.log('Finance ping error:', err);
+        this.logger.error(`Finance ping error: ${err}`);
       });
   }
 
   @SubscribeMessage('conversation.audio')
   async conversation(@MessageBody() data: Buffer) {
-    this.logger.log('Message received');
+    this.logger.info('Message received');
     const transcription = await this.sttModel.getTranscription(
       new Float32Array(data.buffer),
     );
 
-    this.logger.log('Transcription send');
+    this.logger.info('Transcription send');
     this.server.emit('conversation.user.message', transcription);
 
     await this.mcpClient.processQuery(transcription, this.server, true);
-    this.logger.log('LLM reply sent');
   }
 
   @SubscribeMessage('conversation.audio.chunk')
   conversationAudioChunk(@MessageBody() data: Buffer) {
-    this.logger.log('Conversation audio chunk received');
+    this.logger.info('Conversation audio chunk received');
     this.audioBuffer = Buffer.concat(
       [this.audioBuffer, data],
       this.audioBuffer.length + data.length,
@@ -98,7 +99,7 @@ export class EventsGateway {
 
   @SubscribeMessage('conversation.audio.chunk.stop')
   async conversationAudioChunkStop() {
-    console.log('Conversation audio chunk stop');
+    this.logger.info('Conversation audio chunk stop');
 
     const transcription = await this.sttModel.getTranscription(
       new Float32Array(this.audioBuffer.buffer),
@@ -106,7 +107,6 @@ export class EventsGateway {
     this.server.emit('conversation.user.message', transcription);
 
     await this.mcpClient.processQuery(transcription, this.server, false);
-    this.logger.log('LLM reply sent');
 
     this.audioBuffer = Buffer.alloc(0);
   }
@@ -114,21 +114,20 @@ export class EventsGateway {
   @SubscribeMessage('speech')
   async speech(@MessageBody() data: string) {
     await this.ttsModel.synthesizeSpeech(data, this.server);
-    this.logger.log('Speech synthesized');
+    this.logger.info('Speech synthesized');
   }
 
   @SubscribeMessage('conversation.user.text')
   async textConverstation(@MessageBody() data: string) {
-    this.logger.log('Conversation use text received');
+    this.logger.info('Conversation use text received');
     this.server.emit('conversation.user.message', data);
 
     await this.mcpClient.processQuery(data, this.server, false);
-    this.logger.log('LLM reply sent');
   }
 
   @SubscribeMessage('conversation.assistant.init')
   async initAssistant(@MessageBody() data: string) {
-    this.logger.log('Conversation assistant init received:', data);
+    this.logger.info(`Conversation assistant init received: ${data}`);
     await this.mcpClient.initAssistant(data);
   }
 }

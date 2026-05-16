@@ -42,7 +42,10 @@ export default class McpClient {
 
   async loadServers() {
     this.logger.log('Loading MCP servers...');
-    const dir = join(process.cwd(), 'src/assets/mcp_servers/');
+    const dir = join(
+      process.cwd(),
+      process.env.MCP_SERVERS_PATH ?? 'src/assets/mcp_servers/',
+    );
     const files = await readdir(dir);
 
     files.map(async (file) => {
@@ -94,21 +97,6 @@ export default class McpClient {
       role: 'user',
       content: query,
     });
-
-    await this.callLlm(server, isSynthesize);
-  }
-
-  async processToolResponse(
-    id: string,
-    response: string,
-    server: Server,
-    isSynthesize: boolean,
-  ) {
-    this.messages.push({
-      role: 'user',
-      content: [{ type: 'tool_result', tool_use_id: id, content: response }],
-    });
-    console.log('messages:', this.messages);
 
     await this.callLlm(server, isSynthesize);
   }
@@ -167,7 +155,7 @@ export default class McpClient {
                   signature: '',
                 };
                 (message.content as ContentBlockParam[]).push(thinkingBlock);
-                console.log('thinkingBlock:', thinkingBlock);
+                this.logger.log('thinkingBlock:', thinkingBlock);
               }
 
               if (response) {
@@ -176,7 +164,7 @@ export default class McpClient {
                   text: response,
                 };
                 (message.content as ContentBlockParam[]).push(textBlock);
-                console.log('textBlock:', textBlock);
+                this.logger.log('textBlock:', textBlock);
               }
 
               if (toolName) {
@@ -187,7 +175,7 @@ export default class McpClient {
                   input: toolInput,
                 };
                 (message.content as ContentBlockParam[]).push(toolUseBlock);
-                console.log('toolUseBlock:', toolUseBlock);
+                this.logger.log('toolUseBlock:', toolUseBlock);
 
                 const response = await this.callTool(toolName, toolInput);
 
@@ -200,13 +188,16 @@ export default class McpClient {
                   (message.content as ContentBlockParam[]).push(
                     toolResultBlock,
                   );
-                  console.log('toolResultBlock:', toolResultBlock);
+                  this.logger.log('toolResultBlock:', toolResultBlock);
                 }
+
+                this.messages.push(message);
                 this.callLlm(server, isSynthesize);
+              } else {
+                this.messages.push(message);
               }
 
-              this.messages.push(message);
-              console.log('Stream finished');
+              this.logger.log('Stream finished');
               return;
             }
 
@@ -214,7 +205,7 @@ export default class McpClient {
             const splitChunk = chunkString.split('\n');
             splitChunk.map(async (chunk) => {
               if (chunk.startsWith('data')) {
-                console.log('chunk:', chunk);
+                // console.log('chunk:', chunk);
                 const data = JSON.parse(chunk.substring(6)) as
                   | MessageStart
                   | ContentBlockStart

@@ -43,19 +43,18 @@ export class EventsGateway {
   }
 
   @SubscribeMessage('status.llm.check')
-  async checkLLMStatus() {
-    this.logger.info('Check LLM status');
-    await fetch(`${process.env.LLM_URL}/health`)
-      .then((res) => res.json())
-      .then((data) => {
-        this.logger.info(`data: ${data}`);
-        if (data.status === 'ok') this.server.emit('status.llm.online');
-        else this.server.emit('status.finance.offline');
-      })
-      .catch((err) => {
-        this.server.emit('status.llm.offline');
-        this.logger.error(`LLM ping error: ${err}`);
-      });
+  checkLLMStatus() {
+    setInterval(() => {
+      fetch(`${process.env.LLM_URL}/health`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status === 'ok') this.server.emit('status.llm.online');
+          else this.server.emit('status.finance.offline');
+        })
+        .catch((err) => {
+          this.server.emit('status.llm.offline');
+        })
+    }, 1000);
   }
 
   @SubscribeMessage('status.finance.check')
